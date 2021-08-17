@@ -1,28 +1,22 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @version      0.2
+// @description  Parse seventy upgrades into warlock TBC Sim
+// @author       Gwelican
 // @require      https://code.jquery.com/jquery-3.2.1.min.js
 // @match        https://seventyupgrades.com/character/*/set/*
 // @icon         https://www.google.com/s2/favicons?domain=seventyupgrades.com
 // @grant        GM_setClipboard
+// @grant        GM_notification
 // @run-at       document-start
 
 // ==/UserScript==
-
 (function() {
     'use strict';
 
     async function sleep() {
         return new Promise(r => setTimeout(r, 500));
-    }
-
-    async function waitForLoadById(query) {
-        while(!document.getElementById(query)) {
-            await sleep(1);
-        }
     }
 
     async function waitForLoadByQuery(query) {
@@ -36,7 +30,6 @@
         $('div[class^="character-summary_tabsRightButtons"]').prepend('<button id="export">Export</button>')
 
         $('#export').click(() => {
-            const slotImages = $('a[class^="gear-slot_iconWrapper"] img[data-tip]:not([data-tip=""]')
 
             const slotIdToSlot = {
                 1: "head",
@@ -62,21 +55,18 @@
             const data = getSetData();
 
             for (const id of Object.keys(slotIdToSlot)) {
-                items[slotIdToSlot[id]] = {}
-                items[slotIdToSlot[id]].itemId = data.itemIds[id]
-                items[slotIdToSlot[id]].enchantId = data.enchantIds[id] && data.enchantIds[id].replace("spell:","")
-
-                items[slotIdToSlot[id]].gems = data.gemIds[id]
-                items[slotIdToSlot[id]].gemColors = data.items[id].socketOrder
+                const slotName = slotIdToSlot[id]
+                items[slotName] = {}
+                items[slotName].itemId = data.itemIds[id]
+                items[slotName].enchantId = data.enchantIds[id] && data.enchantIds[id].replace("spell:","")
+                items[slotName].gems = data.gemIds[id]
+                items[slotName].gemColors = data.items[id].socketOrder
             }
-            console.log(items)
 
             const importString = createImportString(items, Object.values(slotIdToSlot))
             GM_setClipboard(JSON.stringify(importString))
+            GM_notification({title: 'Export', text: 'Copied to clipboard'} )
         })
-
-
-
 
     });
 
@@ -261,20 +251,22 @@
         }
 
 
+        // items
         for(const key of allSlots) {
             result.selectedItems[key] = items[key].itemId
         }
+        result.selectedItems.twohand = null
 
-        const enchantSlots = ["chest", "bracer", "shoulders", "head", "boots", "legs", "gloves", "ring1", "ring2" ]
+        // enchants
+        const enchantSlots = [ "chest", "bracer", "shoulders", "head", "boots", "legs", "gloves", "ring1", "ring2" ]
         for (const key of enchantSlots) {
-            console.log(key)
             result.selectedEnchants[key] = items[key].enchantId
-
         }
-        result.selectedEnchants.weapon = result.selectedEnchants.mainhand
+        result.selectedEnchants.weapon = items.mainhand.enchantId
 
 
-        const gemSlots = ["head", "shoulders", "chest", "bracer", "legs", "gloves", "belt" ]
+        // gems
+        const gemSlots = [ "head", "shoulders", "chest", "bracer", "legs", "gloves", "belt" ]
         for (const key of gemSlots) {
             const itemId = items[key].itemId
 
@@ -286,8 +278,6 @@
                 }
             }
         }
-
-        result.selectedItems.twohand = null
 
         return result
 
