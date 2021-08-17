@@ -4,11 +4,8 @@
 // @version      0.2
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
-// @require      https://code.jquery.com/jquery-3.2.1.min.js
 // @match        https://seventyupgrades.com/character/*/set/*
 // @icon         https://www.google.com/s2/favicons?domain=seventyupgrades.com
-// @grant        GM_setClipboard
-// @grant        GM_notification
 // @run-at       document-start
 
 // ==/UserScript==
@@ -27,10 +24,10 @@
 
 
     waitForLoadByQuery('a[class^="gear-slot_iconWrapper"').then( () => {
-        $('div[class^="character-summary_tabsRightButtons"]').prepend('<button id="export">Export</button>')
-
-        $('#export').click(() => {
-
+        const button = document.createElement("button");
+        button.innerHTML = "Export"
+        document.querySelector('div[class^="character-summary_tabsRightButtons"]').prepend(button)
+        button.onclick = function() {
             const slotIdToSlot = {
                 1: "head",
                 2: "neck",
@@ -64,9 +61,9 @@
             }
 
             const importString = createImportString(items, Object.values(slotIdToSlot))
-            GM_setClipboard(JSON.stringify(importString))
-            GM_notification({title: 'Export', text: 'Copied to clipboard'} )
-        })
+            copyToClipboard(JSON.stringify(importString))
+            notify()
+        }
 
     });
 
@@ -285,7 +282,8 @@
 
 
     function getSetData() {
-        const itemDiv = $('a[class^="gear-slot_iconWrapper"]')[0]
+        const itemDiv = document.querySelector('a[class^="gear-slot_iconWrapper"]')
+        //const itemDiv = $('a[class^="gear-slot_iconWrapper"]')[0]
 
         for (const key of Object.keys(itemDiv)) {
             if (key.startsWith("__reactEventHandlers")) {
@@ -298,5 +296,46 @@
         }
     }
 
+    function copyToClipboard(text) {
+        if (window.clipboardData && window.clipboardData.setData) {
+            /*IE specific code path to prevent textarea being shown while dialog is visible.*/
+            return clipboardData.setData("Text", text);
+        } else if (document.queryCommandSupported
+                   && document.queryCommandSupported("copy")) {
+            var textarea = document.createElement("textarea");
+
+            textarea.textContent = text;
+
+            /* Prevent scrolling to bottom of page in MS Edge. */
+            textarea.style.position = "fixed";
+
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                navigator.clipboard.writeText(text);
+                /* Security exception may be thrown by some browsers.*/
+            } catch (ex) {
+                console.warn("Copy to clipboard failed.", ex);
+                return false;
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+    }
+
+    function notify() {
+        if (!document.querySelector("#notifyDiv")) {
+            const notifyDiv = document.createElement("div")
+            notifyDiv.id = 'notifyDiv'
+            document.body.append(notifyDiv)
+        }
+
+        const notifyDiv = document.getElementById('notifyDiv')
+        notifyDiv.style = "left: 50%; bottom: 30px; position: fixed; padding: 16px; z-index: 1; text-align: center; background-color: #333; min-width: 250px; margin-left: -125px"
+        notifyDiv.innerHTML = "Import string copied to clipboard"
+
+        setTimeout(function(){ notifyDiv.style.visibility = "hidden" }, 3000);
+    }
 
 })();
