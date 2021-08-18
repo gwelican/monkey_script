@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @match        https://seventyupgrades.com/character/*/set/*
@@ -24,7 +24,25 @@
         }
     }
 
-
+    function getEnchant(enchant) {
+        if (enchant) {
+            const enchantId = enchant.id
+            const itemToEnchantMapper = {
+                24274: 31372, // runic spellthread
+                24273: 31371, // mystic spellthread
+                23545: 29467, // power of scourge
+                28886: 35406, // aldor exalted
+                28909: 35437, // scryer exalted
+                28881: 35405, // aldor honored
+                28903: 35436, // scryer
+                29191: 35447 // glyph of power
+            };
+            if (itemToEnchantMapper[enchantId]) {
+                return itemToEnchantMapper[enchantId]
+            }
+            return enchantId && enchantId.replace("spell:","")
+        }
+    }
     waitForLoadByQuery('a[class^="gear-slot_iconWrapper"').then( () => {
         const button = document.createElement("button");
         button.innerHTML = "Export"
@@ -57,7 +75,7 @@
                 const slotName = slotIdToSlot[id]
                 items[slotName] = {}
                 items[slotName].itemId = data.itemIds[id]
-                items[slotName].enchantId = data.enchantIds[id] && data.enchantIds[id].replace("spell:","")
+                items[slotName].enchantId = getEnchant(data.enchants[id])
                 items[slotName].gems = data.gemIds[id]
                 items[slotName].gemColors = data.items[id].socketOrder
             }
@@ -85,14 +103,14 @@
                 "prayerOfSpirit": true,
                 "bloodPact": false,
                 "inspiringPresence": true,
-                "moonkinAura": true,
+                "moonkinAura": false,
                 "powerInfusion": false,
-                "powerOfTheGuardianWarlock": true,
+                "powerOfTheGuardianWarlock": false,
                 "powerOfTheGuardianMage": false,
                 "eyeOfNight": true,
-                "chainOfTheTwilightOwl": true,
+                "chainOfTheTwilightOwl": false,
                 "jadePendantOfBlasting": false,
-                "idolOfTheRavenGoddess": true,
+                "idolOfTheRavenGoddess": false,
                 "drumsOfBattle": false,
                 "curseOfTheElements": true,
                 "shadowWeaving": true,
@@ -109,11 +127,12 @@
                 "elixirOfMajorMageblood": false,
                 "superManaPotion": false,
                 "destructionPotion": true,
-                "superiorWizardOil": true,
+                "superiorWizardOil": false,
                 "demonicRune": false,
                 "flameCap": true,
                 "skullfishSoup": true,
-                "veryBerryCream": false
+                "veryBerryCream": false,
+                "brilliantWizardOil": true
             },
             "selectedGems": {
             },
@@ -216,9 +235,9 @@
                 "target-level": "73",
                 "target-shadow-resistance": "0",
                 "target-fire-resistance": "0",
-                "automatically-open-sim-details": true,
-                "randomizeValues": "on",
-                "petChoice": "0",
+                "automatically-open-sim-details": "yes",
+                "randomizeValues": "no",
+                "petChoice": "2",
                 "sacrificePet": "yes",
                 "petMode": "0",
                 "shattrathFaction": "Aldor",
