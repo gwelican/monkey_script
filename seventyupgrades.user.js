@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @match        https://seventyupgrades.com/character/*/set/*
 // @icon         https://www.google.com/s2/favicons?domain=seventyupgrades.com
+// @updateURL    https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.user.js
+// @downloadURL  https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.user.js
 // @run-at       document-start
 
 // ==/UserScript==
@@ -263,7 +265,7 @@
 
 
         // gems
-        const gemSlots = [ "head", "shoulders", "chest", "bracer", "legs", "gloves", "belt" ]
+        const gemSlots = [ "head", "shoulders", "chest", "bracer", "legs", "gloves", "belt", "boots" ]
         for (const key of gemSlots) {
             const itemId = items[key].itemId
 
