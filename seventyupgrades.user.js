@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @match        https://seventyupgrades.com/character/*/set/*
@@ -130,7 +130,7 @@
                 "superiorWizardOil": false,
                 "demonicRune": false,
                 "flameCap": true,
-                "skullfishSoup": true,
+                "blackenedBasilisk": true,
                 "veryBerryCream": false,
                 "brilliantWizardOil": true
             },
