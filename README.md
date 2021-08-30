@@ -4,7 +4,7 @@
 
 Steps:
 * Install tampermonkey: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en
-* Click on this [link](https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.prod.user.js) to install the script
+* Click on this [link](https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.user.js) to install the script
 * Go to seventy upgrades, load your character set, click on the export button(above your character)
   * ![image](https://user-images.githubusercontent.com/88141/130013299-1353b871-59c8-4664-a55c-49daaafd59f1.png)
 * Go to [warlocksimulator](https://kristoferhh.github.io/WarlockSimulatorTBC/) and import
