@@ -82,7 +82,6 @@
                 items[slotName].gemColors = data.items[id].socketOrder
             }
 
-            isFire();
             const importString = createImportString(items, Object.values(slotIdToSlot))
             copyToClipboard(JSON.stringify(importString))
             notify()
@@ -366,6 +365,7 @@
             }
         }
 
+        console.log(characterStats)
         return characterStats["Fire Damage"] > characterStats["Shadow Damage"]
     }
 
