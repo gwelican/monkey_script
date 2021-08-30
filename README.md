@@ -9,6 +9,10 @@ Steps:
   * ![image](https://user-images.githubusercontent.com/88141/130013299-1353b871-59c8-4664-a55c-49daaafd59f1.png)
 * Go to [warlocksimulator](https://kristoferhh.github.io/WarlockSimulatorTBC/) and import
 
+What's supported?
+* exporting items with gems and enchants(see the known issues for non cookie cutter enchants)
+* configuring which pet to sacrifice(imp if fire > shadow else succubus)
+
 ### Known issues
 * It **only** export items and it has a default settings configured(talents, buffs etc)
   * You are welcome to modify the script to your needs locally
