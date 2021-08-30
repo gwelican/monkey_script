@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
-// @match        https://seventyupgrades.com/character/*/set/*
+// @include      https://seventyupgrades.com/character/*/set/*
+// @include      https://seventyupgrades.com/characters
 // @icon         https://www.google.com/s2/favicons?domain=seventyupgrades.com
 // @updateURL    https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.user.js
 // @downloadURL  https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.user.js
@@ -23,6 +24,7 @@
             await sleep(1);
         }
     }
+
 
     function getEnchant(enchant) {
         if (enchant) {
@@ -80,6 +82,7 @@
                 items[slotName].gemColors = data.items[id].socketOrder
             }
 
+            isFire();
             const importString = createImportString(items, Object.values(slotIdToSlot))
             copyToClipboard(JSON.stringify(importString))
             notify()
@@ -228,8 +231,10 @@
             "selectedItems": {},
             "selectedEnchants": {},
             "settings": {
+                "fightType": "singleTarget",
+                "enemyAmount": "5",
                 "race": "gnome",
-                "iterations": "10000",
+                "iterations": "1000",
                 "min-fight-length": "150",
                 "max-fight-length": "210",
                 "target-level": "73",
@@ -237,7 +242,7 @@
                 "target-fire-resistance": "0",
                 "automatically-open-sim-details": "yes",
                 "randomizeValues": "no",
-                "petChoice": "2",
+                "petChoice": isFire() ? "0" : "2",
                 "sacrificePet": "yes",
                 "petMode": "0",
                 "shattrathFaction": "Aldor",
@@ -271,7 +276,7 @@
 
         // items
         for(const key of allSlots) {
-            result.selectedItems[key] = items[key].itemId
+            result.selectedItems[key] = Number(items[key].itemId)
         }
         result.selectedItems.twohand = null
 
@@ -343,6 +348,25 @@
                 document.body.removeChild(textarea);
             }
         }
+    }
+
+    function isFire() {
+        const sections = document.querySelectorAll('section[class^="set-stats_statSection"]')
+        const characterStats = {};
+        for (const section of sections) {
+            if (section.querySelector('h3').textContent == "Spell") {
+                const stats = section.querySelectorAll('div[class^="stat-value_statValue__"]')
+
+                for (const stat of stats) {
+
+                    const key = stat.querySelector('label').textContent
+                    const value = stat.querySelector('span span').textContent
+                    characterStats[key] = value
+                }
+            }
+        }
+
+        return characterStats["Fire Damage"] > characterStats["Shadow Damage"]
     }
 
     function notify() {
