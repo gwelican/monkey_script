@@ -365,7 +365,7 @@
             }
         }
 
-        return characterStats["Fire Damage"] > characterStats["Shadow Damage"]
+        return +characterStats["Fire Damage"] > +characterStats["Shadow Damage"]
     }
 
     function notify() {
