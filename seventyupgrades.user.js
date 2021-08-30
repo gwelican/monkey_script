@@ -365,7 +365,6 @@
             }
         }
 
-        console.log(characterStats)
         return characterStats["Fire Damage"] > characterStats["Shadow Damage"]
     }
 
