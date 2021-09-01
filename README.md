@@ -4,6 +4,7 @@
 
 Steps:
 * Install tampermonkey: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en
+  * It might be working with firefox tampermonkey too, I have not tested it tho.
 * Click on this [link](https://github.com/gwelican/monkey_script/raw/main/seventyupgrades.user.js) to install the script
 * Go to seventy upgrades, load your character set, click on the export button(above your character)
   * ![image](https://user-images.githubusercontent.com/88141/130013299-1353b871-59c8-4664-a55c-49daaafd59f1.png)
