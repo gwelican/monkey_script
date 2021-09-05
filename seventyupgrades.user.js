@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.7.1
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @include      https://seventyupgrades.com/character/*/set/*
@@ -73,23 +73,32 @@
             const items = {};
             const data = getSetData();
 
-            for (const id of Object.keys(slotIdToSlot)) {
-                const slotName = slotIdToSlot[id]
-                items[slotName] = {}
-                items[slotName].itemId = data.itemIds[id]
-                items[slotName].enchantId = getEnchant(data.enchants[id])
-                items[slotName].gems = data.gemIds[id]
-                items[slotName].gemColors = data.items[id].socketOrder
+            // 2h hack
+            let twoHanded = false;
+            if (data.items[16] && data.items[16].handed == "two") {
+                delete(slotIdToSlot[17])
+                twoHanded = true
             }
 
-            const importString = createImportString(items, Object.values(slotIdToSlot))
+            for (const id of Object.keys(slotIdToSlot)) {
+                const slotName = slotIdToSlot[id]
+                if (data.itemIds[id]) {
+                    items[slotName] = {}
+                    items[slotName].itemId = data.itemIds[id]
+                    items[slotName].enchantId = getEnchant(data.enchants[id])
+                    items[slotName].gems = data.gemIds[id]
+                    items[slotName].gemColors = data.items[id].socketOrder
+                }
+            }
+
+            const importString = createImportString(items, Object.values(slotIdToSlot), twoHanded)
             copyToClipboard(JSON.stringify(importString))
             notify()
         }
 
     });
 
-    function createImportString(items, allSlots) {
+    function createImportString(items, allSlots, twoHanded) {
         const result = {
             "auras": {
                 "felArmor": true,
@@ -272,12 +281,15 @@
             }
         }
 
-
         // items
         for(const key of allSlots) {
             result.selectedItems[key] = Number(items[key].itemId)
         }
-        result.selectedItems.twohand = null
+
+        if (twoHanded) {
+            result.selectedItems.twohand = result.selectedItems.mainhand
+            result.selectedItems.mainhand = null;
+        }
 
         // enchants
         const enchantSlots = [ "chest", "bracer", "shoulders", "head", "boots", "legs", "gloves", "ring1", "ring2" ]
