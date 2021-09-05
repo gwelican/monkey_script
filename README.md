@@ -19,4 +19,3 @@ What's supported?
   * You are welcome to modify the script to your needs locally
 * Enchants created by items(not enchanter) has limited support: seventyupgrades stores the itemid, instead of the enchant id, so I hardcoded most of the useful shoulder/pants/shoulder enchants, you can see them in the [code](https://github.com/gwelican/monkey_script/blob/main/seventyupgrades.prod.user.js#L31)
   * if you find a missing enchant, let me know
-* It only supports mainhand/offhand combinations
