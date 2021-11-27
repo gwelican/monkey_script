@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.7.2
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @include      https://seventyupgrades.com/character/*/set/*
