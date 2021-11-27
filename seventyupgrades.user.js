@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.7.1
+// @version      0.7
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @include      https://seventyupgrades.com/character/*/set/*
@@ -308,7 +308,7 @@
                 result.selectedGems[key] = {}
                 result.selectedGems[key][itemId] = []
                 for(const index in items[key].gemColors) {
-                    result.selectedGems[key][itemId].push([items[key].gemColors[index], items[key].gems[index]])
+                    result.selectedGems[key][itemId].push([items[key].gemColors[index], toInt(items[key].gems[index])])
                 }
             }
         }
@@ -361,6 +361,10 @@
         }
     }
 
+    function toInt(text) {
+        return +text
+    }
+
     function isFire() {
         const sections = document.querySelectorAll('section[class^="set-stats_statSection"]')
         const characterStats = {};
@@ -377,7 +381,7 @@
             }
         }
 
-        return +characterStats["Fire Damage"] > +characterStats["Shadow Damage"]
+        return toInt(characterStats["Fire Damage"]) > toInt(characterStats["Shadow Damage"])
     }
 
     function notify() {
