@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.7.2
+// @version      0.7.3
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @include      https://seventyupgrades.com/character/*/set/*
@@ -369,7 +369,7 @@
         const sections = document.querySelectorAll('section[class^="set-stats_statSection"]')
         const characterStats = {};
         for (const section of sections) {
-            if (section.querySelector('h3').textContent == "Spell") {
+            if (section.querySelector('h2').textContent == "Spell") {
                 const stats = section.querySelectorAll('div[class^="stat-value_statValue__"]')
 
                 for (const stat of stats) {
