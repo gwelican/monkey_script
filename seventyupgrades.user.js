@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Seventy upgrades parser
 // @namespace    http://tampermonkey.net/
-// @version      0.7.3
+// @version      0.7.4
 // @description  Parse seventy upgrades into warlock TBC Sim
 // @author       Gwelican
 // @include      https://seventyupgrades.com/character/*/set/*
@@ -114,7 +114,7 @@
                 "prayerOfSpirit": true,
                 "bloodPact": false,
                 "inspiringPresence": true,
-                "moonkinAura": false,
+                "moonkinAura": true,
                 "powerInfusion": false,
                 "powerOfTheGuardianWarlock": false,
                 "powerOfTheGuardianMage": false,
@@ -125,7 +125,7 @@
                 "drumsOfBattle": false,
                 "curseOfTheElements": true,
                 "shadowWeaving": true,
-                "improvedScorch": true,
+                "improvedScorch": false,
                 "misery": true,
                 "judgementOfTheCrusader": true,
                 "vampiricTouch": true,
@@ -140,7 +140,7 @@
                 "destructionPotion": true,
                 "superiorWizardOil": false,
                 "demonicRune": false,
-                "flameCap": true,
+                "flameCap": false,
                 "blackenedBasilisk": true,
                 "veryBerryCream": false,
                 "brilliantWizardOil": true
@@ -164,7 +164,7 @@
                 "shadowburn": 1,
                 "intensity": 2,
                 "destructiveReach": 2,
-                "improvedImmolate": 5,
+                "improvedImmolate": 0,
                 "ruin": 1,
                 "emberstorm": 5,
                 "backlash": 3,
@@ -204,7 +204,7 @@
                 "demonicKnowledge": 0,
                 "demonicTactics": 0,
                 "summonFelguard": 0,
-                "cataclysm": 0,
+                "cataclysm": 5,
                 "aftermath": 0,
                 "improvedFirebolt": 0,
                 "improvedLashOfPain": 0,
@@ -216,12 +216,12 @@
             },
             "rotation": {
                 "dot": {
-                    "immolate": true
+                    "immolate": false
                 },
                 "filler": {
                     "searingPain": false,
-                    "shadowBolt": false,
-                    "incinerate": true
+                    "shadowBolt": true,
+                    "incinerate": false
                 },
                 "curse": {
                     "curseOfRecklessness": false,
@@ -242,7 +242,7 @@
                 "fightType": "singleTarget",
                 "enemyAmount": "5",
                 "race": "gnome",
-                "iterations": "1000",
+                "iterations": "5000",
                 "min-fight-length": "150",
                 "max-fight-length": "210",
                 "target-level": "73",
@@ -269,11 +269,11 @@
                 "survivalHunterAgility": "800",
                 "exposeWeaknessUptime": "70",
                 "customIsbUptime": "yes",
-                "customIsbUptimeValue": "50",
+                "customIsbUptimeValue": "85",
                 "infinitePlayerMana": "no",
                 "infinitePetMana": "no",
                 "prepopBlackBook": "no",
-                "rotationOption": "simChooses",
+                "rotationOption": "userChooses",
                 "powerInfusionAmount": "1",
                 "innervateAmount": "1",
                 "ferociousInspirationAmount": "1",
